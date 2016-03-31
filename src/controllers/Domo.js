@@ -26,10 +26,10 @@ var makerPage = function (req, res) {
 var makeDomo = function (req, res) {
     //check if the required fields exist
     //normally you would also perform validation to know if the data they sent you was real 
-    if (!req.body.name || !req.body.age) {
+    if (!req.body.name || !req.body.age || !req.body.bloodType) {
         //if not respond with a 400 error (either through json or a web page depending on the client dev)
         return res.status(400).json({
-            error: "RAWR! Both name and age are required!"
+            error: "RAWR! All fields required!"
         });
     }
 
@@ -38,6 +38,7 @@ var makeDomo = function (req, res) {
     var domoData = {
         name: req.body.name,
         age: req.body.age,
+        bloodType: req.body.bloodType,
         owner: req.session.account._id
     };
 

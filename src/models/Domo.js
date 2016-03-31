@@ -49,6 +49,12 @@ var DomoSchema = new mongoose.Schema({
         required: true
     },
 
+    bloodType: {
+        type: String,
+        required: true,
+        trim: true
+    },
+
     owner: {
         type: mongoose.Schema.ObjectId,
         required: true,
@@ -68,7 +74,8 @@ var DomoSchema = new mongoose.Schema({
 DomoSchema.methods.toAPI = function () {
     return {
         name: this.name,
-        age: this.age
+        age: this.age,
+        bloodType: this.bloodType
     };
 };
 
@@ -86,7 +93,7 @@ DomoSchema.statics.findByOwner = function (ownerId, callback) {
         owner: mongoose.Types.ObjectId(ownerId)
     };
 
-    return DomoModel.find(search).select("name age").exec(callback);
+    return DomoModel.find(search).select("name age bloodType").exec(callback);
 };
 
 //Create the domo model based on the schema. You provide it with a custom discriminator (the name of the object type. Can be anything)
