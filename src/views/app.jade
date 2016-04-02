@@ -25,9 +25,13 @@ block body
       each val in domos
         div.domo
           img(class="domoFace", src="/assets/img/domoface.jpeg", alt="domo face")
-          h3.domoName Name: #{val.name}
-          h3.domoAge Age: #{val.age}
-          h3.domoBloodType Blood Type: #{val.bloodType}
+          h3.domoName Name: 
+            span #{val.name}
+          h3.domoAge Age: 
+            span #{val.age}
+          h3.domoBloodType Blood Type: 
+            span #{val.bloodType}
+          button(class="deleteDomo", action="/delete", method="POST") Delete
   #domoMessage
     img#speech(src="/assets/img/speech.png", alt="speech box")
     h3

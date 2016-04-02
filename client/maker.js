@@ -1,12 +1,14 @@
 "use strict";
 
-$(document).ready(function() {
+$(document).ready(function () {
 
     function handleError(message) {
         $("#errorMessage").text(message);
-        $("#domoMessage").animate({width:'toggle'},350);
+        $("#domoMessage").animate({
+            width: 'toggle'
+        }, 350);
     }
-    
+
     function sendAjax(action, data) {
         $.ajax({
             cache: false,
@@ -14,32 +16,60 @@ $(document).ready(function() {
             url: action,
             data: data,
             dataType: "json",
-            success: function(result, status, xhr) {
-                $("#domoMessage").animate({width:'hide'},350);
+            success: function (result, status, xhr) {
+                $("#domoMessage").animate({
+                    width: 'hide'
+                }, 350);
 
                 window.location = result.redirect;
             },
-            error: function(xhr, status, error) {
+            error: function (xhr, status, error) {
                 var messageObj = JSON.parse(xhr.responseText);
-            
+
                 handleError(messageObj.error);
             }
-        });        
+        });
     }
-    
-    $("#makeDomoSubmit").on("click", function(e) {
+
+    $("#makeDomoSubmit").on("click", function (e) {
         e.preventDefault();
-    
-        $("#domoMessage").animate({width:'hide'},350);
-    
-        if($("#domoName").val() == '' || $("#domoAge").val() == '') {
+
+        $("#domoMessage").animate({
+            width: 'hide'
+        }, 350);
+
+        if ($("#domoName").val() == '' || $("#domoAge").val() == '') {
             handleError("RAWR! All fields are required");
             return false;
         }
 
         sendAjax($("#domoForm").attr("action"), $("#domoForm").serialize());
-        
+
         return false;
     });
-    
+
+    $(".deleteDomo").on("click", function (e) {
+        e.preventDefault();
+
+        $("#domoMessage").animate({
+            width: 'hide'
+        }, 350);
+
+        //console.log($(this).siblings(".domoName")[0]);
+
+        var json = {
+            name: $(this).siblings(".domoName").children("span").text(),
+            age: $(this).siblings(".domoAge").children("span").text(),
+            bloodType: $(this).siblings(".domoBloodType").children("span").text(),
+            _csrf: $("#domoForm input[name=_csrf]").attr("value")
+        };
+
+        //console.log($("#domoForm").serialize());
+        //console.log($.param(json));
+
+        sendAjax($(this).attr("action"), $.param(json));
+
+        return false;
+    });
+
 });
